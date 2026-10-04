@@ -29,6 +29,8 @@ Let an AI assistant (Claude, Cursor, any MCP client) answer customer questions a
 
 Keep the key private; it acts for one business.
 
+No key yet? Leave `CALLCHATSYN_API_KEY` out and the server uses the public demo key (`ccs_demo_public`): answers come from a demo business and bookings are dry runs, so you can try every tool before signing up.
+
 ## Notes
 - Answers are rule-based FAQ matching (fast, predictable), not free-form generation.
 - API docs and OpenAPI spec: https://callchatsyn.com/developers · https://callchatsyn.com/openapi.json

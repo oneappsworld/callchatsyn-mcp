@@ -11,5 +11,5 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
-# CALLCHATSYN_API_KEY is optional at startup; tools return a clear error until it is set.
+# CALLCHATSYN_API_KEY is optional: without it the tools use the public demo key.
 ENTRYPOINT ["node", "dist/index.js"]
