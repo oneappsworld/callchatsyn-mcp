@@ -33,7 +33,7 @@ const asText = (r: { ok: boolean; status: number; data: Json }) => ({
   isError: !r.ok,
 });
 
-const server = new McpServer({ name: "callchatsyn", version: "0.2.0" });
+const server = new McpServer({ name: "callchatsyn", version: "0.3.0" });
 
 server.registerTool("answer_customer_question", TOOLS.answer_customer_question, async ({ message }) =>
   asText(await call("/api/v1/answer", { method: "POST", body: { message } })),
@@ -45,6 +45,10 @@ server.registerTool("list_open_times", TOOLS.list_open_times, async ({ lang }) =
 
 server.registerTool("book_appointment", TOOLS.book_appointment, async (args) =>
   asText(await call("/api/v1/bookings", { method: "POST", body: args })),
+);
+
+server.registerTool("cancel_appointment", TOOLS.cancel_appointment, async ({ id }) =>
+  asText(await call(`/api/v1/bookings/${encodeURIComponent(id)}`, { method: "DELETE" })),
 );
 
 await server.connect(new StdioServerTransport());

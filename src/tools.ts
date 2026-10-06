@@ -42,8 +42,8 @@ export const TOOLS = {
       "Book one appointment for a customer. This creates a real booking: the business is notified, and if it has connected Cal.com the booking is created there too. " +
       "With the demo key it's a dry run that books nothing. Not idempotent: booking the same time twice fails the second time. " +
       "Only call it after the customer has confirmed the time and service; needs a 'start' from list_open_times and the customer's email or phone. " +
-      "Errors: 404 the time is no longer offered (call list_open_times again), 409 it was just taken, 400 missing start, service, or both email and phone. " +
-      "Returns JSON { booked, start, label }.",
+      "Errors: 404 the time is no longer offered (call list_open_times again), 409 it was just taken, 400 missing start, service, or both email and phone, or the business's connected calendar needs a detail the customer didn't give (the message says which, e.g. an email). " +
+      "Returns JSON { booked, id, start, label }; keep 'id' if the customer may want to cancel.",
     inputSchema: {
       start: z.string().describe("The exact 'start' value returned by list_open_times (ISO 8601 UTC), unchanged."),
       service: z.string().min(1).describe("What the customer is booking; use one of the 'services' returned by list_open_times."),
@@ -53,5 +53,17 @@ export const TOOLS = {
       remarks: z.string().max(500).optional().describe("Optional note for the business, up to 500 characters (e.g. 'first visit')."),
     },
     annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
+  },
+  cancel_appointment: {
+    title: "Cancel an appointment",
+    description:
+      "Cancel one of the business's bookings by the 'id' that book_appointment returned. This changes data: the time becomes free again, and if the business has connected Cal.com the booking is cancelled there too (Cal.com emails the customer). " +
+      "Only call it after the customer has clearly asked to cancel that specific booking. To reschedule, cancel and then book a new time from list_open_times. " +
+      "With the demo key it's a dry run. Errors: 404 no such booking for this business, 409 already cancelled, 400 not a booking id. " +
+      "Returns JSON { cancelled, id, start }.",
+    inputSchema: {
+      id: z.string().uuid().describe("The booking 'id' returned by book_appointment (a UUID)."),
+    },
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: true },
   },
 } as const;

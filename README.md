@@ -9,7 +9,8 @@ Let an AI assistant (Claude, Cursor, any MCP client) answer customer questions a
 |---|---|---|
 | `answer_customer_question` | No (read-only) | Answers from the business's FAQs and order data (English/Chinese); flags booking and "talk to a person" requests |
 | `list_open_times` | No (read-only) | Next open times (up to 5, next 7 days) in the business's time zone, plus services and locations; from CallChatSyn hours or the business's connected Cal.com |
-| `book_appointment` | Yes, creates a booking | Books one of those times; the business is notified and, with Cal.com connected, the booking is created there. Not idempotent. Demo key = dry run |
+| `book_appointment` | Yes, creates a booking | Books one of those times and returns its `id`; the business is notified and, with Cal.com connected, the booking is created there. Not idempotent. Demo key = dry run |
+| `cancel_appointment` | Yes, cancels a booking | Cancels a booking by `id` (also in Cal.com if connected). To reschedule: cancel, then book a new time. Demo key = dry run |
 
 ## Remote server (nothing to install)
 Add this URL as a custom connector (Claude: Settings → Connectors → Add custom connector; Cursor and others: a Streamable HTTP server):
