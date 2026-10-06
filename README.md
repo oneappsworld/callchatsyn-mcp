@@ -5,13 +5,22 @@ Let an AI assistant (Claude, Cursor, any MCP client) answer customer questions a
 **Free for the first 1,000 businesses** (founder offer: 100 API calls a day, 2,000 a month).
 
 ## Tools
-| Tool | What it does |
-|---|---|
-| `answer_customer_question` | Answers from the business's FAQs and order data (English/Chinese); flags booking and "talk to a person" requests |
-| `list_open_times` | Next open appointment times in the business's time zone, plus services and locations |
-| `book_appointment` | Books one of those times (only offered times; the business is notified) |
+| Tool | Changes data? | What it does |
+|---|---|---|
+| `answer_customer_question` | No (read-only) | Answers from the business's FAQs and order data (English/Chinese); flags booking and "talk to a person" requests |
+| `list_open_times` | No (read-only) | Next open times (up to 5, next 7 days) in the business's time zone, plus services and locations; from CallChatSyn hours or the business's connected Cal.com |
+| `book_appointment` | Yes, creates a booking | Books one of those times; the business is notified and, with Cal.com connected, the booking is created there. Not idempotent. Demo key = dry run |
 
-## Setup
+## Remote server (nothing to install)
+Add this URL as a custom connector (Claude: Settings → Connectors → Add custom connector; Cursor and others: a Streamable HTTP server):
+
+```
+https://callchatsyn.com/api/mcp
+```
+
+Without a key it uses the demo business. To act for your own business, send the header `Authorization: Bearer ccs_live_...`. Also listed in the official MCP Registry as `com.callchatsyn/callchatsyn`.
+
+## Local setup (npx)
 1. Create a CallChatSyn account, add FAQs and opening hours, then Dashboard → Developers → claim founder access → create an API key.
 2. Add to your MCP client config:
 

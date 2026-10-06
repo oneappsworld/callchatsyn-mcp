@@ -1,6 +1,6 @@
 {
   "name": "callchatsyn-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server for the CallChatSyn API: answer customer questions from a small business's FAQs, list open appointment times and book them.",
   "type": "module",
   "bin": { "callchatsyn-mcp": "dist/index.js" },
